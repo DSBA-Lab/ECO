@@ -44,20 +44,20 @@ The `scores` can be down load from the following links:
 or you can make use of the `get_data.sh` script to download the data and scores.
   
   ```bash
-├ data
-   ├── original_data
-   │   ├── candidate_captions.csv
-   │   ├── images_20k
-   │   └── pred.csv
-   ├── results
-   │   └── #Result csv file will be saved here
-   └── scores
-       ├── blip_itc_scores.json
-       ├── evaclip_scores.json
-       ├── itm_filtered_consensus.json
-       ├── metaclip_scores.json
-       ├── mobileclip_scores.json
-       └── openclip_scores.json
+  ├── data
+│   ├── original_data
+│   │   ├── candidate_captions.csv
+│   │   ├── images_20k
+│   │   └── pred.csv
+│   ├── results
+│   │   └── #Result csv file will be saved here
+│   └── scores
+│       ├── blip_itc_scores.json
+│       ├── evaclip_scores.json
+│       ├── itm_filtered_consensus.json
+│       ├── metaclip_scores.json
+│       ├── mobileclip_scores.json
+│       └── openclip_scores.json
   ```
 
 ## Model Weight
@@ -77,6 +77,16 @@ or you can download all the model weights by running the following command:
 ```bash
 source get_model_weights.sh   # Files will be downloaded to `model_weights` directory.
 ```
+  ```bash
+├── model_weights
+│   ├── evaclip
+│   │   └── EVA_CLIP_18B_psz14_s6B.fp16.pt
+│   ├── metaclip
+│   │   └── G14_fullcc2.5b.pt
+│   └── mobileclip
+│       └── mobileclip_blt.pt
+  ```
+
 
 ## Citation
 ### BLIP
