@@ -1,11 +1,16 @@
 # NICE2024
+![pipeline](docs/pipeline.png)
 Official repository of Team DSBA for the NICE 2024 Challenge
+
+
 
 **Table of Contents**
 - [Setup](#setup)
   - [Environment](#environment)
   - [Data](#data)
   - [Model Weight](#model-weight)
+- [How to run](#run)
+  - [Score Generation](#score-generation)
 - [Reference](#reference)
 ## Setup
 ### Environment
@@ -59,31 +64,32 @@ The `scores` can be downloaded from the following links: [Google Drive](https://
 │   ├── results
 │   │   └── #Result csv file will be saved here
 │   └── scores
-│       ├── blip_itc_scores.json
-│       ├── blip_itm_scores.json
-│       ├── evaclip_scores.json
-│       ├── itm_filtered_consensus.json
-│       ├── metaclip_scores.json
-│       ├── mobileclip_scores.json
-│       └── openclip_scores.json
+│       ├── blip_itc_scores.json # You can generate by 1. Score Generation
+│       ├── blip_itm_scores.json # You can generate by 1. Score Generation
+│       ├── evaclip_scores.json # You can generate by 1. Score Generation
+│       ├── itm_filtered_consensus.json # You can generate by 2. Consensus Score Generation
+│       ├── metaclip_scores.json # You can generate by 1. Score Generation
+│       ├── mobileclip_scores.json # You can generate by 1. Score Generation
+│       └── openclip_scores.json # You can generate by 1. Score Generation
   ```
 
 ### Model Weight
 The model weights can be downloaded from the following links:
+Weights of openclip and blip2 is automatically downloaded when you run the score generation script.
 
 <div align="center">
 
 |    `model_name`     | `model weight` |
 |:-------------------:|:--------------:|
 | [EvaCLIP](https://github.com/baaivision/EVA/tree/master/EVA-CLIP-18B) | [EVA_18B_psz14.fp16](https://huggingface.co/BAAI/EVA-CLIP-18B/resolve/main/EVA_CLIP_18B_psz14_s6B.fp16.pt) (`36.7GB`) |
-| [MetaCLIP](https://github.com/facebookresearch/MetaCLIP)  | [ViT-bigG-14-quickgelu](https://dl.fbaipublicfiles.com/MMPT/metaclip/G14_fullcc2.5b.pt) (`28.38G`) |
+| [MetaCLIP](https://github.com/facebookresearch/MetaCLIP)  | [ViT-bigG-14-quickgelu](https://dl.fbaipublicfiles.com/MMPT/metaclip/G14_fullcc2.5b.pt) (`28.38GB`) |
 | [MobileCLIP](https://github.com/apple/ml-mobileclip/tree/main) | [mobileclip_blt](https://docs-assets.developer.apple.com/ml-research/datasets/mobileclip/mobileclip_blt.pt) (`571.46MB`) |
 
 </div>
 
 or you can download all the model weights by running the following command:
 ```bash
-source ./scripts/get_model_weights.sh   # Files will be downloaded to `model_weights` directory.
+source ./scripts/00_get_model_weights.sh   # Files will be downloaded to `model_weights` directory.
 ```
   ```bash
 ├── model_weights
@@ -95,18 +101,28 @@ source ./scripts/get_model_weights.sh   # Files will be downloaded to `model_wei
 │       └── mobileclip_blt.pt
   ```
 
-## Run
-### Score Generation
-You need to prepare score files for each model to generate the final submission file. 
-You can either generate the scores for each model or you can download the scores from the following links: [Google Drive](https://drive.google.com/drive/folders/1-p2ps4DWpexhSQj4IP6pMPMgcS4KthM-?usp=sharing)
+## How to run
+### 1. CLIP Score Generation
+You need to prepare score files for each vision-language model to generate the final submission file. 
+You can either generate the scores for each model or you can download the scores from the following links: [Google Drive](https://drive.google.com/drive/folders/1-p2ps4DWpexhSQj4IP6pMPMgcS4KthM-?usp=sharing) \
 You need a 80GB of VRAM for running the EVA-CLIP 18B Model.
 
 ```bash
-source ./scripts/evaclip_score.sh #script_filename [evaclip_score.sh, metaclip_score.sh, mobileclip_score.sh, openclip_score.sh, blip_itc_score.sh, blip_itm_score.sh]
+source ./scripts/01_evaclip_score.sh #script_filename [evaclip_score.sh, metaclip_score.sh, mobileclip_score.sh, openclip_score.sh, blip_itc_score.sh, blip_itm_score.sh]
 ```
 or you can download all the scores by running the following command:
 ```bash
-source ./scripts/all_score.sh
+source ./scripts/01_all_score.sh
+```
+### 2. Consensus Score Generation
+After finishing generating scores for each VL models. Now you can generate consensus scores by running the following command:
+```bash
+source ./scripts/02_consensus_score.sh
+```
+### 3. Ensemble Score and Submission File Generation
+At last, fuse all the scores and generate the final submission file by running the following command:
+```bash
+source ./scripts/03_ensemble_score.sh
 ```
 
 

@@ -1,40 +1,8 @@
 import json
-from typing import Any, Dict, List
+from typing import Any, Dict
 
 import numpy as np
-import torch
-from sklearn.feature_extraction.text import TfidfVectorizer
 from tqdm import tqdm
-
-
-def consensus_scoring(all_candidates: List[str], device: str = "cuda") -> np.ndarray:
-    """
-    Compute the CIDEr score for a list of candidate captions using the consensus scoring method.
-
-    Parameters:
-    - all_candidates (List[str]): A list of candidate captions.
-    - device (str): The device to use for computation (default: 'cuda').
-
-    Returns:
-    - np.ndarray: The CIDEr scores for the candidate captions.
-    """
-    # Ensure PyTorch is using the specified device
-    device = torch.device(device if torch.cuda.is_available() else "cpu")
-
-    # Use TfidfVectorizer to vectorize the captions
-    vectorizer = TfidfVectorizer(ngram_range=(1, 2))
-    tf_idf_matrix = vectorizer.fit_transform(all_candidates)
-
-    # Convert the TF-IDF matrix to a dense PyTorch tensor and transfer to the device
-    tf_idf_tensor = torch.tensor(tf_idf_matrix.todense(), dtype=torch.float64).to(device)
-
-    # Compute cosine similarity
-    similarity_scores = torch.mm(tf_idf_tensor, tf_idf_tensor.transpose(0, 1))
-
-    # Calculate the average cosine similarity as the CIDEr score
-    cider_scores = ((similarity_scores.sum(dim=-1) - 1) / (similarity_scores.size(1) - 1)).cpu().detach().numpy()
-
-    return cider_scores
 
 
 def standardize(score: Any, mean: float, std_dev: float) -> float:

@@ -1,15 +1,14 @@
 import argparse
+import json
 import os
 
 import pandas as pd
 import torch
-from omegaconf import OmegaConf
 import torch.nn.functional as F
-import torch
-import json
+from omegaconf import OmegaConf
 from PIL import Image
 from tqdm import tqdm
-import os
+
 
 @torch.no_grad()
 def clip_score(model, tokenizer, preprocess, captions, device, cfg):
@@ -47,11 +46,12 @@ def clip_score(model, tokenizer, preprocess, captions, device, cfg):
     with open(score_file_path, "w") as f:
         json.dump(result_dict, f)
 
+
 @torch.no_grad()
 def itc_score(model, image_embedding, text_ids, text_atts):
     """
     Calculate ITC scores for given images and captions.
-    
+
     Parameters:
     - model: BLIP model
     - image_embedding: Image embeddings
@@ -64,18 +64,18 @@ def itc_score(model, image_embedding, text_ids, text_atts):
 
     query_tokens = model.query_tokens.expand(image_embedding.shape[0], -1, -1)
     query_output = model.Qformer.bert(
-                                        query_embeds=query_tokens,
-                                        encoder_hidden_states=image_embedding,
-                                        encoder_attention_mask=image_atts,
-                                        return_dict=True,
-                                        )
+        query_embeds=query_tokens,
+        encoder_hidden_states=image_embedding,
+        encoder_attention_mask=image_atts,
+        return_dict=True,
+    )
     image_feats = F.normalize(model.vision_proj(query_output.last_hidden_state), dim=-1)
 
     text_output = model.Qformer.bert(
-                                    text_ids,
-                                    attention_mask=text_atts,
-                                    return_dict=True,
-                                )
+        text_ids,
+        attention_mask=text_atts,
+        return_dict=True,
+    )
     text_feat = F.normalize(model.text_proj(text_output.last_hidden_state[:, 0, :]), dim=-1)
 
     sims = torch.bmm(image_feats, text_feat.unsqueeze(-1))
@@ -83,11 +83,12 @@ def itc_score(model, image_embedding, text_ids, text_atts):
 
     return sim.cpu().squeeze().numpy().tolist()
 
+
 @torch.no_grad()
 def itm_score(model, image_embedding, text_ids, text_atts):
     """
     Calculate ITM scores for given images and captions.
-    
+
     Parameters:
     - model: BLIP model
     - image_embedding: Image embeddings
@@ -112,7 +113,7 @@ def itm_score(model, image_embedding, text_ids, text_atts):
     )
     vl_embeddings = output_itm.last_hidden_state[:, : query_tokens.size(1), :]
     itm_logit = model.itm_head(vl_embeddings).mean(dim=1)
-    itm_logit = torch.nn.functional.softmax(itm_logit, dim=-1)[:,1]
+    itm_logit = torch.nn.functional.softmax(itm_logit, dim=-1)[:, 1]
     return itm_logit.cpu().numpy().tolist()
 
 
@@ -127,7 +128,7 @@ def blip_score(model, vis_processors, captions, device, cfg):
     - device: Device to run the model on.
     - cfg: Configuration object with attributes for directories and score model name.
     """
-    result_dict={}
+    result_dict = {}
     for file in tqdm(captions.columns):
         image = (
             vis_processors["eval"](Image.open(os.path.join(cfg.DIR.Origin, f"images_20k/{file}")).convert("RGB"))
@@ -137,16 +138,14 @@ def blip_score(model, vis_processors, captions, device, cfg):
         imgae_embedding = model.ln_vision(model.visual_encoder(image)).float()
 
         caption_list = captions[file].dropna().values.tolist()
-        text = model.tokenizer(caption_list,
-                            truncation=True,
-                            padding=True,
-                            max_length=32,
-                            return_tensors="pt").to(device)
+        text = model.tokenizer(caption_list, truncation=True, padding=True, max_length=32, return_tensors="pt").to(
+            device
+        )
         if cfg.score_model[-3:] == "itc":
             score = itc_score(model, imgae_embedding, text.input_ids, text.attention_mask)
         elif cfg.score_model[-3:] == "itm":
             score = itm_score(model, imgae_embedding, text.input_ids, text.attention_mask)
-        result_dict[file] = {"captions": caption_list, "score": score}
+        result_dict[file] = {"captions": caption_list, "scores": score}
 
     score_file_path = os.path.join(cfg.DIR.Score, f"{cfg.score_model}_scores_1.json")
     print("Scoring completed. Saving scores to", score_file_path)
@@ -173,14 +172,14 @@ if __name__ == "__main__":
 
     # Load Captions
     print("Loading captions...")
-    captions = pd.read_csv(os.path.join(cfg.DIR.Origin, "candidate_captions.csv"), encoding="cp1252").T
+    captions = pd.read_csv(os.path.join(cfg.DIR.Origin, "candidate_captions.csv"), encoding="ISO-8859-1").T
     captions.columns = captions.iloc[0]
     captions = captions.drop(captions.index[0])
     captions.reset_index(drop=True, inplace=True)
     print("Captions loaded.")
 
     # Device Setting
-    device = "cuda:4" if torch.cuda.is_available() else "cpu" 
+    device = "cuda" if torch.cuda.is_available() else "cpu"
 
     print("Loading model...")
     if args.model == "evaclip":
@@ -194,8 +193,9 @@ if __name__ == "__main__":
         )
         tokenizer = get_tokenizer("EVA-CLIP-18B")
     elif args.model == "metaclip":
-        from meta_clip import create_model_and_transforms
         from open_clip import SimpleTokenizer
+
+        from meta_clip import create_model_and_transforms
 
         model, _, preprocess = create_model_and_transforms(
             "ViT-bigG-14-quickgelu",
@@ -221,14 +221,14 @@ if __name__ == "__main__":
         tokenizer = open_clip.get_tokenizer("ViT-bigG-14")
     elif args.model[:4] == "blip":
         from lavis.models import load_model_and_preprocess
-        model, vis_processors, text_processors = load_model_and_preprocess("blip2_image_text_matching",
-                                                                            "coco", 
-                                                                            device=device, 
-                                                                            is_eval=True)
+
+        model, vis_processors, text_processors = load_model_and_preprocess(
+            "blip2_image_text_matching", "coco", device=device, is_eval=True
+        )
 
     print(f"Model {args.model} loaded.")
     print("Scoring captions...")
-    if args.model in valid_models[:4]: #CLIP Scores
+    if args.model in valid_models[:4]:  # CLIP Scores
         clip_score(model, tokenizer, preprocess, captions, device, cfg)
-    else: # BLIP_ITC, BLIP_ITM Scores
+    else:  # BLIP_ITC, BLIP_ITM Scores
         blip_score(model, vis_processors, captions, device, cfg)
