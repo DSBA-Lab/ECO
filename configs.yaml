@@ -1,0 +1,19 @@
+DIR:
+  Origin: "./data/original_data"
+  Score: "./data/scores"
+  Result: "./data/results"
+  Weight: "./model_weights"
+
+MODEL:
+  MobileCLIP: True
+  OpenCLIP: True
+  EvaCLIP: True
+  MetaCLIP: True
+  BlipITC: True
+
+WEIGHT:
+  Consensus_Score: 1
+  CLIP_Score: 3.52
+
+THRESH:
+  Short_Threshold: 0.39
