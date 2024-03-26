@@ -160,10 +160,9 @@ cython_debug/
 #.idea/
 
 
-
+/data
 *.pt
 *.pth
-*.json
 *.csv
 *.jpeg
 *.jpg
