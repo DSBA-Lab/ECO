@@ -13,7 +13,6 @@ from PIL import Image
 from tqdm import tqdm
 import os
 
-
 @torch.no_grad()
 def clip_score(model, tokenizer, preprocess, captions, cfg):
     """
@@ -27,6 +26,7 @@ def clip_score(model, tokenizer, preprocess, captions, cfg):
     - cfg: Configuration object with attributes for directories and score model name.
 
     """
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     result_dict = {}
     for file in tqdm(captions.columns):
         image_path = os.path.join(cfg.DIR.Origin, f"images_20k/{file}")
@@ -68,41 +68,46 @@ if __name__ == "__main__":
     cfg.score_model = args.model
 
     # Load Captions
+    print("Loading captions...")
     captions = pd.read_csv(os.path.join(cfg.DIR.Origin, "candidate_captions.csv"), encoding="cp1252").T
     captions.columns = captions.iloc[0]
     captions = captions.drop(captions.index[0])
     captions.reset_index(drop=True, inplace=True)
+    print("Captions loaded.")
 
     # Torch Setting
-    device = "cuda" if torch.cuda.is_available() else "cpu"
+    device = "cuda" if torch.cuda.is_available() else "cpu" 
 
+    print("Loading model...")
     if args.model == "evaclip":
         from evaclip import create_model_and_transforms, get_tokenizer
 
         model, _, preprocess = create_model_and_transforms(
             "EVA-CLIP-18B",
             pretrained=os.path.join(cfg.DIR.Weight, "evaclip", "EVA_CLIP_18B_psz14_s6B.fp16.pt"),
+            force_custom_clip=True,
             device=device,
         )
-        tokenizer = get_tokenizer("ViT-B/32")
+        tokenizer = get_tokenizer("EVA-CLIP-18B")
     elif args.model == "metaclip":
-        import open_clip
+        from meta_clip import create_model_and_transforms
+        from open_clip import SimpleTokenizer
 
-        model, _, preprocess = open_clip.create_model_and_transforms(
+        model, _, preprocess = create_model_and_transforms(
             "ViT-bigG14-quickgelu",
             pretrained=os.path.join(cfg.DIR.Weight, "metaclip", "G14_fullcc2.5b.pt"),
             device=device,
         )
-        tokenizer = open_clip.get_tokenizer("ViT-bigG14-quickgelu")
+        tokenizer = SimpleTokenizer()
     elif args.model == "mobileclip":
-        import mobileclip
+        from mobileclip import create_model_and_transforms, get_tokenizer
 
-        model, _, preprocess = mobileclip.create_model_and_transforms(
+        model, _, preprocess = create_model_and_transforms(
             "mobileclip_b",
             pretrained=os.path.join(cfg.DIR.Weight, "mobileclip", "mobileclip_blt.pt"),
             device=device,
         )
-        tokenizer = mobileclip.get_tokenizer("mobileclip_b")
+        tokenizer = get_tokenizer("mobileclip_b")
     elif args.model == "openclip":
         import open_clip
 
@@ -110,3 +115,8 @@ if __name__ == "__main__":
             "ViT-bigG-14", pretrained="laion2b_s39b_b160k", device=device
         )
         tokenizer = open_clip.get_tokenizer("ViT-bigG-14")
+
+    print(f"Model {args.model} loaded.")
+    print("Scoring captions...")
+    if args.model in valid_models[:4]:
+        clip_score(model, tokenizer, preprocess, captions, cfg)

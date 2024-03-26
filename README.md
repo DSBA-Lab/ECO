@@ -39,9 +39,9 @@ docker run -it --gpus all nice2024
 ```
 
 ## Data
-The `original data` can be downloaded from the [competition website](https://codalab.lisn.upsaclay.fr/competitions/16930#participate)
-The `scores` can be down load from the following links:
-or you can make use of the `get_data.sh` script to download the data and scores.
+The `original data` can be downloaded from the [competition website](https://codalab.lisn.upsaclay.fr/competitions/16930#participate) or you can make use of the `get_data.sh` script to download the data.
+The `scores` can be down load from the following links: [Google Drive](https://drive.google.com/drive/folders/1-p2ps4DWpexhSQj4IP6pMPMgcS4KthM-?usp=sharing)
+
   
   ```bash
   ├── data
@@ -75,7 +75,7 @@ The model weights can be downloaded from the following links:
 
 or you can download all the model weights by running the following command:
 ```bash
-source get_model_weights.sh   # Files will be downloaded to `model_weights` directory.
+source ./scripts/get_model_weights.sh   # Files will be downloaded to `model_weights` directory.
 ```
   ```bash
 ├── model_weights
@@ -88,7 +88,7 @@ source get_model_weights.sh   # Files will be downloaded to `model_weights` dire
   ```
 
 
-## Citation
+## Reference
 ### BLIP
 ```bibtex
 @inproceedings{li2022blip,
