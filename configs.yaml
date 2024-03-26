@@ -12,8 +12,8 @@ MODEL:
   BlipITC: True
 
 WEIGHT:
-  Consensus_Score: 1
-  CLIP_Score: 3.52
+  Consensus_Score: 0
+  CLIP_Score: 1
 
 THRESH:
-  Short_Threshold: 0.39
+  Short_Threshold: 0.0000000000000000000001
