@@ -107,12 +107,12 @@ source ./scripts/00_get_model_weights.sh   # Files will be downloaded to `model_
 ### 1. CLIP Score BLIP-ITC,ITM Score Generation
 You need to prepare score files for each vision-language model to generate the final submission file. 
 You can either generate the scores for each model or you can download the scores from the following links: [Google Drive](https://drive.google.com/drive/folders/1-p2ps4DWpexhSQj4IP6pMPMgcS4KthM-?usp=sharing) \
-You need a 80GB of VRAM for running the EVA-CLIP 18B Model.
+*You need a 80GB of VRAM for running the EVA-CLIP 18B Model.*
 
 ```bash
 source ./scripts/01_evaclip_score.sh #script_filename [evaclip_score.sh, metaclip_score.sh, mobileclip_score.sh, openclip_score.sh, blip_itc_score.sh, blip_itm_score.sh]
 ```
-or you can download all the scores by running the following command:
+Or you can generate all the scores by running the following command:
 ```bash
 source ./scripts/01_all_score.sh
 ```
