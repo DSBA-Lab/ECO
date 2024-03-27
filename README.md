@@ -175,10 +175,9 @@ The final scores will be named as `pred.json` and will be in the following forma
 The content of this project itself is licensed under [LICENSE](LICENSE).
 
 ## Acknowledgements
-Our codebase is built using multiple opensource contributions. 
-We would like to thank the authors of the following repositories for their valuable contributions
-- **blip2** : [paper](https://arxiv.org/abs/2301.12597) [code]()
-- **EvaCLIP** : [paper]() [code]()
-- **MetaCLIP** : [paper]() [code]()
-- **MobileCLIP** : [paper]() [code]()
-- **OpenCLIP** : [paper]() [code]()
+Our codebase is built using multiple opensource contributions.We would like to thank the authors of the following repositories for their valuable contributions
+- **BLIP2** : [paper](https://arxiv.org/abs/2301.12597), [code](https://github.com/salesforce/LAVIS/tree/main/projects/blip2)
+- **EVA-CLIP-18BP** : [paper](https://arxiv.org/abs/2402.04252), [code](https://github.com/baaivision/EVA/tree/master/EVA-CLIP-18B)
+- **MetaCLIP** : [paper](https://arxiv.org/abs/2309.16671), [code](https://github.com/facebookresearch/MetaCLIP)
+- **MobileCLIP** : [paper](https://arxiv.org/abs/2311.17049), [code](https://github.com/apple/ml-mobileclip)
+- **OpenCLIP** : [paper](https://arxiv.org/abs/2212.07143), [code](https://github.com/mlfoundations/open_clip)
