@@ -30,9 +30,9 @@ def consensus_scoring(all_candidates: List[str]) -> List[float]:
     return concensus_scores
 
 
-def rulebase_filter(caption_list: List[str]):
+def bad_format_filter(caption_list: List[str]):
     """
-    Filter captions based on rule-based criteria.
+    Filter captions based on length and punctuation.
 
     Parameters:
     - caption_list (List[str]): List of captions to filter.
@@ -73,7 +73,7 @@ if __name__ == "__main__":
     result_dict = {}
     for file in tqdm(blip2_itm_scores.keys()):
         filtered_captions = itm_filter(blip2_itm_scores[file])
-        filtered_captions = rulebase_filter(filtered_captions)
+        filtered_captions = bad_format_filter(filtered_captions)
         consensus_score = consensus_scoring(filtered_captions)
 
         result_dict[file] = {"captions": filtered_captions, "scores": consensus_score}

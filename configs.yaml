@@ -16,4 +16,4 @@ WEIGHT:
   CLIP_Score: 3.52
 
 THRESH:
-  Short_Threshold: 0.39
+  Short_Cap_Selection: 0.39

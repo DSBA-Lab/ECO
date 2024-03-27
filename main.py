@@ -37,16 +37,13 @@ def final_scoring(scores_dict: Dict[str, Dict[str, float]], cfg: Any) -> None:
         max_idxs = np.argsort(total_scores)[-2:][::-1]
         max_caps = [caption_list[idx] for idx in max_idxs]
 
-        if abs(total_scores[max_idxs[0]] - total_scores[max_idxs[1]]) < cfg.THRESH.Short_Threshold:
+        if abs(total_scores[max_idxs[0]] - total_scores[max_idxs[1]]) < cfg.THRESH.Short_Cap_Selection:
             max_caption = min(max_caps, key=lambda x: len(x.split()))
         else:
             max_caption = max_caps[0]
 
         pred.loc[pred["filename"] == file, "caption"] = max_caption
 
-    mmdd = datetime.now().strftime("%m%d")
-    ens_list_str = "_".join(model_name for model_name in list(scores_dict.keys()))
-    #filename = f"{mmdd}_pred_{cfg.WEIGHT.Consensus_Score}_{cfg.WEIGHT.CLIP_Score}_{ens_list_str}_{cfg.THRESH.Short_Threshold}.csv"
     filename = "pred.csv"
     print(f"Saving predictions to {filename}")
     pred.to_csv(os.path.join(cfg.DIR.Result, filename), index=False)
