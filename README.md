@@ -2,26 +2,30 @@
 ![pipeline](docs/pipeline.png)
 Official repository of Team DSBA for the NICE 2024 Challenge
 
-
+## Team Memebers
+- [Kiyoon Jeong](https://github.com/)
+- [Woojun Lee](https://github.com/johnbuzz98)
+- [Woongchan Nam](https://github.com/)
+- [Minjeong Ma]((https://github.com/))
 
 **Table of Contents**
 - [Setup](#setup)
   - [Environment](#environment)
   - [Data](#data)
-  - [Model Weight](#model-weight)
+  - [Model weights](#model-weights)
 - [How to run](#run)
-  - [1. CLIP Score BLIP-ITC,ITM Score Generation](#1-clip-score-blip-itcitm-score-generation)
+  - [1. CLIP Score blip2-ITC,ITM Score Generation](#1-clip-score-blip2-itcitm-score-generation)
   - [2. Consensus Score Generation](#2-consensus-score-generation)
   - [3. Ensemble Score and Submission File Generation](#3-ensemble-score-and-submission-file-generation)
-- [Reference](#reference)
+- [License](#license)
 ## Setup
 ### Environment
-This guide provides detailed instructions for setting up the necessary environments to run the code for different models including `BLIP2,` `EvaCLIP`, `MobileCLIP`, `MetaCLIP`, and `OpenCLIP`. Each model requires a unique environment for optimal performance and compatibility.
+This guide provides detailed instructions for setting up the necessary environments to run the code for different models including `blip2,` `EvaCLIP`, `MobileCLIP`, `MetaCLIP`, and `OpenCLIP`. Each model requires a unique environment for optimal performance and compatibility.
 
 You can install the required dependencies by running the following commands:
 
 ```bash
-# BLIP2
+# blip2
 conda create -n blip2 python=3.8
 conda activate blip2
 pip install salesforce-lavis omegaconf
@@ -66,8 +70,8 @@ The `scores` can be downloaded from the following links: [Google Drive](https://
 │   ├── results
 │   │   └── #Result csv file will be saved here
 │   └── scores
-│       ├── blip_itc_scores.json # You can generate by 1. Score Generation
-│       ├── blip_itm_scores.json # You can generate by 1. Score Generation
+│       ├── blip2_itc_scores.json # You can generate by 1. Score Generation
+│       ├── blip2_itm_scores.json # You can generate by 1. Score Generation
 │       ├── evaclip_scores.json # You can generate by 1. Score Generation
 │       ├── itm_filtered_consensus.json # You can generate by 2. Consensus Score Generation
 │       ├── metaclip_scores.json # You can generate by 1. Score Generation
@@ -75,7 +79,7 @@ The `scores` can be downloaded from the following links: [Google Drive](https://
 │       └── openclip_scores.json # You can generate by 1. Score Generation
   ```
 
-### Model Weight
+### Model weights
 The model weights can be downloaded from the following links:
 Weights of openclip and blip2 is automatically downloaded when you run the score generation script.
 
@@ -104,13 +108,13 @@ source ./scripts/00_get_model_weights.sh   # Files will be downloaded to `model_
   ```
 
 ## How to run
-### 1. CLIP Score BLIP-ITC,ITM Score Generation
+### 1. CLIP Score blip2-ITC,ITM Score Generation
 You need to prepare score files for each vision-language model to generate the final submission file. 
 You can either generate the scores for each model or you can download the scores from the following links: [Google Drive](https://drive.google.com/drive/folders/1-p2ps4DWpexhSQj4IP6pMPMgcS4KthM-?usp=sharing) \
 *You need a 80GB of VRAM for running the EVA-CLIP 18B Model.*
 
 ```bash
-source ./scripts/01_evaclip_score.sh #script_filename [evaclip_score.sh, metaclip_score.sh, mobileclip_score.sh, openclip_score.sh, blip_itc_score.sh, blip_itm_score.sh]
+source ./scripts/01_evaclip_score.sh #script_filename [evaclip_score.sh, metaclip_score.sh, mobileclip_score.sh, openclip_score.sh, blip2_itc_score.sh, blip2_itm_score.sh]
 ```
 Or you can generate all the scores by running the following command:
 ```bash
@@ -167,72 +171,14 @@ The final scores will be named as `pred.json` and will be in the following forma
     
 ```
 
-## Reference
-### BLIP2
-```bibtex
-@inproceedings{li2023blip,
-  title={Blip-2: Bootstrapping language-image pre-training with frozen image encoders and large language models},
-  author={Li, Junnan and Li, Dongxu and Savarese, Silvio and Hoi, Steven},
-  booktitle={International conference on machine learning},
-  pages={19730--19742},
-  year={2023},
-  organization={PMLR}
-}
-```
-### EvaCLIP
-```bibtex
-@article{EVA-CLIP-18B,
-  title={EVA-CLIP-18B: Scaling CLIP to 18 Billion Parameters}, 
-  author={Quan Sun and Jinsheng Wang and Qiying Yu and Yufeng Cui and Fan Zhang and Xiaosong Zhang and Xinlong Wang},
-  journal={arXiv preprint arXiv:2402.04252},
-  year={2023}
-}
-```
-### MetaCLIP
-```bibtex
-@inproceedings{xu2023metaclip,
-   title={Demystifying CLIP Data},
-   author={Hu Xu, Saining Xie, Xiaoqing Ellen Tan, Po-Yao Huang, Russell Howes, Vasu Sharma, Shang-Wen Li, Gargi Ghosh, Luke Zettlemoyer and Christoph Feichtenhofer},
-   journal={arXiv preprint arXiv:2309.16671},
-   year={2023}
-}
-```
-### MobileCLIP
-```bibtex
-@InProceedings{mobileclip2024,
-  author = {Pavan Kumar Anasosalu Vasu, Hadi Pouransari, Fartash Faghri, Raviteja Vemulapalli, Oncel Tuzel},
-  title = {MobileCLIP: Fast Image-Text Models through Multi-Modal Reinforced Training},
-  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
-  month = {June},
-  year = {2024},
-}
-```
-### OpenCLIP
-```bibtex
-@software{ilharco_gabriel_2021_5143773,
-  author       = {Ilharco, Gabriel and
-                  Wortsman, Mitchell and
-                  Wightman, Ross and
-                  Gordon, Cade and
-                  Carlini, Nicholas and
-                  Taori, Rohan and
-                  Dave, Achal and
-                  Shankar, Vaishaal and
-                  Namkoong, Hongseok and
-                  Miller, John and
-                  Hajishirzi, Hannaneh and
-                  Farhadi, Ali and
-                  Schmidt, Ludwig},
-  title        = {OpenCLIP},
-  month        = jul,
-  year         = 2021,
-  note         = {If you use this software, please cite it as below.},
-  publisher    = {Zenodo},
-  version      = {0.1},
-  doi          = {10.5281/zenodo.5143773},
-  url          = {https://doi.org/10.5281/zenodo.5143773}
-}
-```
+## License
+The content of this project itself is licensed under [LICENSE](LICENSE).
 
 ## Acknowledgements
-Our codebase is built using multiple opensource contributions. We would like to thank the authors of the following repositories for their valuable contributions
+Our codebase is built using multiple opensource contributions. 
+We would like to thank the authors of the following repositories for their valuable contributions
+- **blip2** : [paper](https://arxiv.org/abs/2301.12597) [code]()
+- **EvaCLIP** : [paper]() [code]()
+- **MetaCLIP** : [paper]() [code]()
+- **MobileCLIP** : [paper]() [code]()
+- **OpenCLIP** : [paper]() [code]()

@@ -53,7 +53,7 @@ def itc_score(model, image_embedding, text_ids, text_atts):
     Calculate ITC scores for given images and captions.
 
     Parameters:
-    - model: BLIP model
+    - model: blip2 model
     - image_embedding: Image embeddings
     - text_ids: Tokenized text
     - text_atts: Attention mask for text_ids
@@ -90,7 +90,7 @@ def itm_score(model, image_embedding, text_ids, text_atts):
     Calculate ITM scores for given images and captions.
 
     Parameters:
-    - model: BLIP model
+    - model: blip2 model
     - image_embedding: Image embeddings
     - text_ids: Tokenized text
     - text_atts: Attention mask for text_ids
@@ -118,12 +118,12 @@ def itm_score(model, image_embedding, text_ids, text_atts):
 
 
 @torch.no_grad()
-def blip_score(model, vis_processors, captions, device, cfg):
+def blip2_score(model, vis_processors, captions, device, cfg):
     """
-    Calculate BLIP (ITC, ITM) scores for given images and captions.
+    Calculate blip2 (ITC, ITM) scores for given images and captions.
     Parameters:
-    - model: BLIP model
-    - vis_processors: Image processors for BLIP model
+    - model: blip2 model
+    - vis_processors: Image processors for blip2 model
     - captions (DataFrame): DataFrame where columns are filenames and values are captions.
     - device: Device to run the model on.
     - cfg: Configuration object with attributes for directories and score model name.
@@ -155,7 +155,7 @@ def blip_score(model, vis_processors, captions, device, cfg):
 
 if __name__ == "__main__":
     # args
-    valid_models = ["mobileclip", "openclip", "evaclip", "metaclip", "blip_itc", "blip_itm"]
+    valid_models = ["mobileclip", "openclip", "evaclip", "metaclip", "blip2_itc", "blip2_itm"]
     parser = argparse.ArgumentParser(description="Generate CLIP scores for the candidate captions.")
     parser.add_argument(
         "--model",
@@ -219,7 +219,7 @@ if __name__ == "__main__":
             "ViT-bigG-14", pretrained="laion2b_s39b_b160k", device=device
         )
         tokenizer = open_clip.get_tokenizer("ViT-bigG-14")
-    elif args.model[:4] == "blip":
+    elif args.model[:4] == "blip2":
         from lavis.models import load_model_and_preprocess
 
         model, vis_processors, text_processors = load_model_and_preprocess(
@@ -230,5 +230,5 @@ if __name__ == "__main__":
     print("Scoring captions...")
     if args.model in valid_models[:4]:  # CLIP Scores
         clip_score(model, tokenizer, preprocess, captions, device, cfg)
-    else:  # BLIP_ITC, BLIP_ITM Scores
-        blip_score(model, vis_processors, captions, device, cfg)
+    else:  # blip2_ITC, blip2_ITM Scores
+        blip2_score(model, vis_processors, captions, device, cfg)

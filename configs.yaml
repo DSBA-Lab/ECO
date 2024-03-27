@@ -9,7 +9,7 @@ MODEL:
   OpenCLIP: True
   EvaCLIP: True
   MetaCLIP: True
-  BlipITC: True
+  Blip2ITC: True
 
 WEIGHT:
   Consensus_Score: 1

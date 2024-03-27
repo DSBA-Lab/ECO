@@ -79,7 +79,7 @@ if __name__ == "__main__":
         ("openclip", "openclip_scores.json", cfg.MODEL.OpenCLIP),
         ("evaclip", "evaclip_scores.json", cfg.MODEL.EvaCLIP),
         ("metaclip", "metaclip_scores.json", cfg.MODEL.MetaCLIP),
-        ("blipitc", "blip_itc_scores.json", cfg.MODEL.BlipITC),
+        ("blip2itc", "blip2_itc_scores.json", cfg.MODEL.Blip2ITC),
     ]
 
     for model_name, file_name, condition in score_models:

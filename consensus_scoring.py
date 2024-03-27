@@ -65,14 +65,14 @@ if __name__ == "__main__":
     # Load Configs
     cfg = OmegaConf.load("configs.yaml")
 
-    print("Loading BLIP ITM scores...")
-    with open("/workspace/data/scores/blip_itm_scores.json", "r") as f:
-        blip_itm_scores = json.load(f)
-    print("Loaded BLIP ITM scores.")
+    print("Loading blip2 ITM scores...")
+    with open("/workspace/data/scores/blip2_itm_scores.json", "r") as f:
+        blip2_itm_scores = json.load(f)
+    print("Loaded blip2 ITM scores.")
 
     result_dict = {}
-    for file in tqdm(blip_itm_scores.keys()):
-        filtered_captions = itm_filter(blip_itm_scores[file])
+    for file in tqdm(blip2_itm_scores.keys()):
+        filtered_captions = itm_filter(blip2_itm_scores[file])
         filtered_captions = rulebase_filter(filtered_captions)
         consensus_score = consensus_scoring(filtered_captions)
 
