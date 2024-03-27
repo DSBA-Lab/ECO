@@ -41,7 +41,7 @@ def clip_score(model, tokenizer, preprocess, captions, device, cfg):
         clip_scores = (image_features @ caption_features.T).detach().cpu().tolist()[0]
         result_dict[file] = {"captions": caption_list, "scores": clip_scores}
 
-    score_file_path = os.path.join(cfg.DIR.Score, f"{cfg.score_model}_scores_1.json")
+    score_file_path = os.path.join(cfg.DIR.Score, f"{cfg.score_model}_scores.json")
     print("Scoring completed. Saving scores to", score_file_path)
     with open(score_file_path, "w") as f:
         json.dump(result_dict, f)
@@ -147,7 +147,7 @@ def blip_score(model, vis_processors, captions, device, cfg):
             score = itm_score(model, imgae_embedding, text.input_ids, text.attention_mask)
         result_dict[file] = {"captions": caption_list, "scores": score}
 
-    score_file_path = os.path.join(cfg.DIR.Score, f"{cfg.score_model}_scores_1.json")
+    score_file_path = os.path.join(cfg.DIR.Score, f"{cfg.score_model}_scores.json")
     print("Scoring completed. Saving scores to", score_file_path)
     with open(score_file_path, "w") as f:
         json.dump(result_dict, f)

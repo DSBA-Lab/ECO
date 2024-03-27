@@ -10,7 +10,9 @@ Official repository of Team DSBA for the NICE 2024 Challenge
   - [Data](#data)
   - [Model Weight](#model-weight)
 - [How to run](#run)
-  - [Score Generation](#score-generation)
+  - [1. CLIP Score BLIP-ITC,ITM Score Generation](#1-clip-score-blip-itcitm-score-generation)
+  - [2. Consensus Score Generation](#2-consensus-score-generation)
+  - [3. Ensemble Score and Submission File Generation](#3-ensemble-score-and-submission-file-generation)
 - [Reference](#reference)
 ## Setup
 ### Environment
@@ -102,7 +104,7 @@ source ./scripts/00_get_model_weights.sh   # Files will be downloaded to `model_
   ```
 
 ## How to run
-### 1. CLIP Score Generation
+### 1. CLIP Score BLIP-ITC,ITM Score Generation
 You need to prepare score files for each vision-language model to generate the final submission file. 
 You can either generate the scores for each model or you can download the scores from the following links: [Google Drive](https://drive.google.com/drive/folders/1-p2ps4DWpexhSQj4IP6pMPMgcS4KthM-?usp=sharing) \
 You need a 80GB of VRAM for running the EVA-CLIP 18B Model.
@@ -115,7 +117,7 @@ or you can download all the scores by running the following command:
 source ./scripts/01_all_score.sh
 ```
 ### 2. Consensus Score Generation
-After finishing generating scores for each VL models. Now you can generate consensus scores by running the following command:
+After finishing generating scores for each vision language models. Now you can generate consensus scores by running the following command:
 ```bash
 source ./scripts/02_consensus_score.sh
 ```
@@ -124,8 +126,46 @@ At last, fuse all the scores and generate the final submission file by running t
 ```bash
 source ./scripts/03_ensemble_score.sh
 ```
+#### Notice on Precision Variability
+Please be aware that when running inference on different GPUs, minor discrepancies in the results may occur, particularly at or beyond the fourth decimal place. These variations stem from differences in floating-point arithmetic precision and hardware architecture. For consistent results, please refer to the provided score JSON files.
 
 
+
+## Results
+The final submission file will be saved in the `data/results` directory. 
+The submission file will be named as `pred.csv` and will be in the following format:
+
+<div align="center">
+
+|    id     | filename | caption |
+|:---------:|:--------:|:-------:|
+| 0        | 1586682407.jpg | a man and a woman in lab coats looking at a watch.  |
+| 1        | 1866091313.jpg |a man standing in a field of wheat.                  |
+| 2        | 1722076415.jpg |a group of people riding a ski lift on a sunny day.  |
+| ...      | ...            | ...                                                 |
+
+</div>
+
+Also you can find the final scores of each caption in `data/results` directory. 
+The final scores will be named as `pred.json` and will be in the following format:
+
+```json
+{"1839580541.jpg": 
+  {"captions": ["a woman is holding a small blue brush and sitting on a bed.", 
+                "a woman sitting on a bed with a blue paintbrush.", 
+                "a woman holding a roller brush sitting on top of a bed.",
+                ...
+                ],
+   "scores": [3.537973796768244, 
+              5.110968624476615, 
+              3.5150481446519826,
+              ...
+              ]
+  },
+  ...
+}
+    
+```
 
 ## Reference
 ### BLIP2

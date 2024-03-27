@@ -46,11 +46,11 @@ def final_scoring(scores_dict: Dict[str, Dict[str, float]], cfg: Any) -> None:
 
     mmdd = datetime.now().strftime("%m%d")
     ens_list_str = "_".join(model_name for model_name in list(scores_dict.keys()))
-    # ens_list_str = "_".join([next((k for k, v in globals().items() if v == ens_item), None) for ens_item in ens_list])
-    filename = f"{mmdd}_pred_{cfg.WEIGHT.Consensus_Score}_{cfg.WEIGHT.CLIP_Score}_{ens_list_str}_{cfg.THRESH.Short_Threshold}.csv"
+    #filename = f"{mmdd}_pred_{cfg.WEIGHT.Consensus_Score}_{cfg.WEIGHT.CLIP_Score}_{ens_list_str}_{cfg.THRESH.Short_Threshold}.csv"
+    filename = "pred.csv"
     print(f"Saving predictions to {filename}")
     pred.to_csv(os.path.join(cfg.DIR.Result, filename), index=False)
-    with open(os.path.join(cfg.DIR.Score, f"{filename[:-4]}.json"), "w") as f:
+    with open(os.path.join(cfg.DIR.Result, f"{filename[:-4]}.json"), "w") as f:
         json.dump(final_scores_dict, f)
 
 
@@ -74,12 +74,12 @@ if __name__ == "__main__":
 
     scores_dict = {}
     score_models = [
-        ("consensus", "itm_filtered_consensus_1.json", True),
-        ("mobileclip", "mobileclip_scores_1.json", cfg.MODEL.MobileCLIP),
-        ("openclip", "openclip_scores_1.json", cfg.MODEL.OpenCLIP),
-        ("evaclip", "evaclip_scores_1.json", cfg.MODEL.EvaCLIP),
-        ("metaclip", "metaclip_scores_1.json", cfg.MODEL.MetaCLIP),
-        ("blipitc", "blip_itc_scores_1.json", cfg.MODEL.BlipITC),
+        ("consensus", "itm_filtered_consensus.json", True),
+        ("mobileclip", "mobileclip_scores.json", cfg.MODEL.MobileCLIP),
+        ("openclip", "openclip_scores.json", cfg.MODEL.OpenCLIP),
+        ("evaclip", "evaclip_scores.json", cfg.MODEL.EvaCLIP),
+        ("metaclip", "metaclip_scores.json", cfg.MODEL.MetaCLIP),
+        ("blipitc", "blip_itc_scores.json", cfg.MODEL.BlipITC),
     ]
 
     for model_name, file_name, condition in score_models:

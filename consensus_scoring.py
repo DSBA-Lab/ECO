@@ -77,7 +77,7 @@ if __name__ == "__main__":
         consensus_score = consensus_scoring(filtered_captions)
 
         result_dict[file] = {"captions": filtered_captions, "scores": consensus_score}
-    score_file_path = os.path.join(cfg.DIR.Score, "itm_filtered_consensus_1.json")
+    score_file_path = os.path.join(cfg.DIR.Score, "itm_filtered_consensus.json")
     with open(score_file_path, "w") as f:
         json.dump(result_dict, f)
     print("Scoring completed. Saving scores to", score_file_path)
