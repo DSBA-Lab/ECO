@@ -219,7 +219,7 @@ if __name__ == "__main__":
             "ViT-bigG-14", pretrained="laion2b_s39b_b160k", device=device
         )
         tokenizer = open_clip.get_tokenizer("ViT-bigG-14")
-    elif args.model[:4] == "blip2":
+    elif args.model[:5] == "blip2":
         from lavis.models import load_model_and_preprocess
 
         model, vis_processors, text_processors = load_model_and_preprocess(
