@@ -6,14 +6,14 @@ Official repository of Team DSBA for the NICE 2024 Challenge
 - [Kiyoon Jeong](https://github.com/kiyoonjeong0305)
 - [Woojun Lee](https://github.com/johnbuzz98)
 - [Woongchan Nam](https://github.com/woongchan789)
-- [Minjeong Ma]((https://github.com/maj34))
+- [Minjeong Ma](https://github.com/maj34)
 
 **Table of Contents**
 - [Setup](#setup)
   - [Environment](#environment)
   - [Data](#data)
   - [Model weights](#model-weights)
-- [How to run](#run)
+- [How to run](#how-to-run)
   - [1. CLIP Score blip2-ITC,ITM Score Generation](#1-clip-score-blip2-itcitm-score-generation)
   - [2. Consensus Score Generation](#2-consensus-score-generation)
   - [3. Ensemble Score and Submission File Generation](#3-ensemble-score-and-submission-file-generation)
