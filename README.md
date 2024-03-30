@@ -1,12 +1,12 @@
-# NICE2024
+# ECO
 ![pipeline](docs/pipeline.png)
 Official repository of Team DSBA for the NICE 2024 Challenge
 
 ## Team Memebers
-- [Kiyoon Jeong](https://github.com/)
+- [Kiyoon Jeong](https://github.com/kiyoonjeong0305)
 - [Woojun Lee](https://github.com/johnbuzz98)
-- [Woongchan Nam](https://github.com/)
-- [Minjeong Ma]((https://github.com/))
+- [Woongchan Nam](https://github.com/woongchan789)
+- [Minjeong Ma]((https://github.com/maj34))
 
 **Table of Contents**
 - [Setup](#setup)
