@@ -1,5 +1,6 @@
 # ECO
 ![pipeline](docs/pipeline.png)
+
 Official repository of ECO from team DSBA Lab for the NICE 2024 Challenge
 
 ## Team Memebers
@@ -7,6 +8,7 @@ Official repository of ECO from team DSBA Lab for the NICE 2024 Challenge
 - Woojun Lee
 - Woongchan Nam
 - Minjeong Ma
+  
 **Table of Contents**
 - [Setup](#setup)
   - [Environment](#environment)
