@@ -1,13 +1,12 @@
 # ECO
 ![pipeline](docs/pipeline.png)
-Official repository of Team DSBA for the NICE 2024 Challenge
+Official repository of ECO from team DSBA Lab for the NICE 2024 Challenge
 
 ## Team Memebers
-- [Kiyoon Jeong](https://github.com/kiyoonjeong0305)
-- [Woojun Lee](https://github.com/johnbuzz98)
-- [Woongchan Nam](https://github.com/woongchan789)
-- [Minjeong Ma](https://github.com/maj34)
-
+- Kiyoon Jeong
+- Woojun Lee
+- Woongchan Nam
+- Minjeong Ma
 **Table of Contents**
 - [Setup](#setup)
   - [Environment](#environment)
@@ -16,7 +15,7 @@ Official repository of Team DSBA for the NICE 2024 Challenge
 - [How to run](#how-to-run)
   - [1. CLIP Score blip2-ITC,ITM Score Generation](#1-clip-score-blip2-itcitm-score-generation)
   - [2. Consensus Score Generation](#2-consensus-score-generation)
-  - [3. Ensemble Score and Submission File Generation](#3-ensemble-score-and-submission-file-generation)
+  - [3. Score Combination and Submission File Generation](#3-score-combination-and-submission-file-generation)
 - [License](#license)
 ## Setup
 ### Environment
@@ -125,7 +124,7 @@ After finishing generating scores for each vision language models. Now you can g
 ```bash
 source ./scripts/02_consensus_score.sh
 ```
-### 3. Ensemble Score and Submission File Generation
+### 3. Score Combination and Submission File Generation
 At last, fuse all the scores and generate the final submission file by running the following command:
 ```bash
 source ./scripts/03_ensemble_score.sh
